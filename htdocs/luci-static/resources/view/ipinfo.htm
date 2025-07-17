@@ -1,0 +1,22 @@
+<%-
+local ip = luci.http.formvalue("ip") or luci.sys.exec("uci get network.wan.ipaddr")
+local info = luci.controller.ipinfo.get_ip_info(ip)
+-%>
+<h2>Информация об IP-адресе</h2>
+<form method="post">
+    <label>Введите IP-адрес:</label>
+    <input type="text" name="ip" value="<%= ip or '' %>"/>
+    <input type="submit" value="Получить информацию"/>
+</form>
+<% if info then %>
+    <table>
+        <tr><td>IP:</td><td><%= info.ip %></td></tr>
+        <tr><td>Страна:</td><td><%= info.country %></td></tr>
+        <tr><td>Регион:</td><td><%= info.region %></td></tr>
+        <tr><td>Город:</td><td><%= info.city %></td></tr>
+        <tr><td>Провайдер:</td><td><%= info.isp %></td></tr>
+        <tr><td>Почтовый индекс:</td><td><%= info.zip_code %></td></tr>
+    </table>
+<% else %>
+    <p>Не удалось получить информацию об IP-адресе.</p>
+<% end %>
